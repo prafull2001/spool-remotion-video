@@ -14,7 +14,7 @@ export const CLEAN_SPRING = {
 // Snappy entry spring
 export const SNAP_SPRING = {
   stiffness: 250,
-  damping: 18,
+  damping: 20,
   mass: 0.8,
 };
 
@@ -46,7 +46,7 @@ export const calculateSCurveTiming = (excuses, baseStartFrame = 70) => {
   const timings = [];
   let currentFrame = baseStartFrame;
 
-  const totalExcuses = Math.min(excuses.length, 14);
+  const totalExcuses = Math.min(excuses.length, 16);
 
   excuses.slice(0, totalExcuses).forEach((excuse, index) => {
     let duration;
@@ -56,10 +56,10 @@ export const calculateSCurveTiming = (excuses, baseStartFrame = 70) => {
       // Phase 1: "Intro Hang" - Slow and readable (0.9s = 27 frames)
       duration = 27;
       velocity = 0.1;
-    } else if (index < 13) {
+    } else if (index < 15) {
       // Phase 2: Exponential acceleration - cards blur and fly
-      // Exponential decay: duration starts at 18 and rapidly decreases
-      const progress = (index - 3) / 9; // 0 to 1
+      // Excuses 4-15 (12 excuses) accelerate through
+      const progress = (index - 3) / 11; // 0 to 1 over 12 excuses
 
       // Exponential curve: fast acceleration
       const exponential = Math.pow(progress, 1.8);
@@ -71,7 +71,7 @@ export const calculateSCurveTiming = (excuses, baseStartFrame = 70) => {
       // Velocity increases exponentially (for blur)
       velocity = 0.3 + exponential * 0.7;
     } else {
-      // Phase 3: "The Brake" - Final excuse holds for 1.2s (36 frames)
+      // Phase 3: "The Brake" - Final excuse #16 holds for 1.2s (36 frames)
       duration = 36;
       velocity = 0; // No blur on brake
     }
@@ -83,8 +83,8 @@ export const calculateSCurveTiming = (excuses, baseStartFrame = 70) => {
       index,
       velocity,
       isIntro: index < 3,
-      isBlur: index >= 3 && index < 13,
-      isBrake: index === 13,
+      isBlur: index >= 3 && index < 15,
+      isBrake: index === totalExcuses - 1, // Last excuse is the brake
     });
 
     currentFrame += duration;
@@ -108,6 +108,7 @@ export const velocityBlur = (velocity) => {
 
 /**
  * Fly-through animation with velocity-based blur
+ * FIXED: Cards now exit faster to prevent overlap during acceleration
  */
 export const flyThroughClean = (frame, startFrame, duration, velocity = 0, isBrake = false) => {
   const relativeFrame = frame - startFrame;
@@ -133,16 +134,18 @@ export const flyThroughClean = (frame, startFrame, duration, velocity = 0, isBra
     y = interpolate(eased, [0, 1], [80, 0]);
     blur = 0;
   } else {
-    // Standard fly-through
-    const entryEnd = 0.35;
-    const exitStart = 0.65;
+    // Adjust timing based on velocity - faster cards need quicker transitions
+    // High velocity = hard cut, low velocity = smoother transition
+    const entryEnd = velocity > 0.5 ? 0.25 : 0.30;
+    const exitStart = velocity > 0.5 ? 0.50 : 0.60;
 
     if (progress < entryEnd) {
-      // Entry
+      // Entry - faster fade in for high velocity cards
       const entryProgress = progress / entryEnd;
-      scale = interpolate(entryProgress, [0, 0.8, 1], [0.2, 1.08, 1.0]);
-      opacity = interpolate(entryProgress, [0, 0.5], [0, 1], { extrapolateRight: "clamp" });
-      y = interpolate(entryProgress, [0, 1], [100, 0]);
+      scale = interpolate(entryProgress, [0, 0.8, 1], [0.3, 1.05, 1.0]);
+      // Faster opacity ramp for high velocity
+      opacity = interpolate(entryProgress, [0, 0.3], [0, 1], { extrapolateRight: "clamp" });
+      y = interpolate(entryProgress, [0, 1], [80, 0]);
       blur = velocityBlur(velocity * (1 - entryProgress));
     } else if (progress < exitStart) {
       // Hold
@@ -151,11 +154,14 @@ export const flyThroughClean = (frame, startFrame, duration, velocity = 0, isBra
       y = 0;
       blur = 0;
     } else {
-      // Exit
+      // Exit - MUCH faster for high velocity cards (hard cut effect)
       const exitProgress = (progress - exitStart) / (1 - exitStart);
-      scale = interpolate(exitProgress, [0, 1], [1.0, 2.5]);
-      opacity = interpolate(exitProgress, [0, 0.5, 1], [1, 0.6, 0]);
-      y = interpolate(exitProgress, [0, 1], [0, -200]);
+      scale = interpolate(exitProgress, [0, 1], [1.0, 1.8]);
+      // Hard cut: opacity drops to 0 very quickly
+      opacity = velocity > 0.5
+        ? interpolate(exitProgress, [0, 0.3], [1, 0], { extrapolateRight: "clamp" })
+        : interpolate(exitProgress, [0, 0.5], [1, 0], { extrapolateRight: "clamp" });
+      y = interpolate(exitProgress, [0, 1], [0, -120]);
       blur = velocityBlur(velocity * exitProgress);
     }
   }

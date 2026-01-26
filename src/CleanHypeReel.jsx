@@ -11,54 +11,68 @@ import { calculateSCurveTiming, vignetteIntensity, glowPulse, zoomOutTransition 
 import {
   COLORS,
   CleanExcuseCard,
-  HeroSpool,
-  VerticalStatsStack,
   Vignette,
-  BackgroundSpool,
-  ReactiveMascot,
-  OutroMascot,
+  WavingMascot,
+  ExcusesStatSlide,
+  TimeSavedStatSlide,
+  PeakExcuseTimeSlide,
+  DownloadCard,
 } from "./CleanComponents.jsx";
 
 // ============================================
-// EXCUSES
+// EXCUSES WITH USERNAMES
 // ============================================
 
 const EXCUSES = [
-  "i need to stalk my ex's new girl!!!!!",
-  "Just peeing and scrolling while i'm peeing honestly",
-  "I am so bored during this work call I need to scroll",
-  "This is my scrolling time let me in",
-  "Going onto X to feed my mind with slop",
-  "Just woke up and I wanna see what's going on",
-  "i wanna see tiktok cuz i hate hate",
-  "Just wanna scroll one more time before i go to sleep",
-  "i want to scroll before i go brush my teeth",
-  "I need to look at X because nothing ever happens",
-  "i need to like my dads instagram post",
-  "I have to post a meme on my Instagram page",
-  "i want to play fortnite bc i'm broed",
-  "Logging onto twitter to see if something else happened", // 14th - The Brake
+  // Hook Excuses (0.9s each) - #1-3
+  { username: "Daneal", text: "i need to stalk my ex's new girl!!!!!" },
+  { username: "Praf", text: "Just peeing and scrolling while i'm peeing honestly" },
+  { username: "Daneal", text: "Going onto X to feed my mind with slop" },
+  // Acceleration Phase - #4-15
+  { username: "Daneal", text: "I am so bored during this work call I need to scroll" },
+  { username: "Vedika", text: "i want to scroll before i go brush my teeth" },
+  { username: "Jainam", text: "Please let me back in I wanna watch Italian brain rot memes" },
+  { username: "Daneal", text: "OK OK OK OK hear me out I need to talk to my friend" },
+  { username: "Julia", text: "I GOT INTO UT AUSTIN AND I WANNA BRAG" },
+  { username: "Praf", text: "I was having an absolutely titillating jolly good time on Instagram" },
+  { username: "Daneal", text: "i wanna see tiktok cuz i hate hate" },
+  { username: "Anonymous", text: "Yo my algorithm is feeding me some good videos right now" },
+  { username: "Vedika", text: "I'm bored and I don't feel like doing my work" },
+  { username: "Praf", text: "Real quick just wanna doom scroll LinkedIn now" },
+  { username: "Daneal", text: "I need to look at X because nothing ever happens" },
+  { username: "Jainam", text: "Please please I just wanna play the game" },
+  // Hard Brake / Final Excuse (1.2s hold) - #16
+  { username: "Praf", text: "It's been a long day and I just wanna look at some furry online" },
 ];
 
-// Calculate timings
-const EXCUSE_TIMINGS = calculateSCurveTiming(EXCUSES, 70);
+// Extract just texts for timing calculation
+const EXCUSE_TEXTS = EXCUSES.map(e => e.text);
+
+// Calculate timings with gap for card overlap fix (start after intro)
+const EXCUSE_TIMINGS = calculateSCurveTiming(EXCUSE_TEXTS, 95);
 const LAST_EXCUSE = EXCUSE_TIMINGS[EXCUSE_TIMINGS.length - 1];
+const LAST_EXCUSE_START = LAST_EXCUSE.startFrame; // When final excuse appears
 const TICKER_END = LAST_EXCUSE.startFrame + LAST_EXCUSE.duration;
-const STATS_START = TICKER_END + 20;
+
+// New timing for sequential stat slides (INCREASED durations per v4 spec)
+const STAT_SLIDE_DURATION = 75; // 2.5s at 30fps
+const STAT_3_DURATION = 90; // 3.0s for the chart slide
+const CTA_DURATION = 90; // 3.0s for CTA hold
+const STATS_START = TICKER_END + 30;
+const STAT_1_START = STATS_START; // Excuses count
+const STAT_2_START = STAT_1_START + STAT_SLIDE_DURATION; // Time saved
+const STAT_3_START = STAT_2_START + STAT_SLIDE_DURATION; // Peak excuse time
+const DOWNLOAD_START = STAT_3_START + STAT_3_DURATION; // CTA (no more Stat 4)
 
 // Get blur phase timing
 const BLUR_PHASE_START = EXCUSE_TIMINGS[3]?.startFrame || 150;
-const BLUR_PHASE_END = EXCUSE_TIMINGS[12]?.startFrame + EXCUSE_TIMINGS[12]?.duration || 300;
+const BLUR_PHASE_END = EXCUSE_TIMINGS[14]?.startFrame + (EXCUSE_TIMINGS[14]?.duration || 10);
 
 // ============================================
-// DARK BACKGROUND
+// CREAM BACKGROUND (Modern & Clean)
 // ============================================
 
-const DarkBackground = () => {
-  const frame = useCurrentFrame();
-
-  const gridDrift = frame * 0.15;
-
+const CreamBackground = () => {
   return (
     <div
       style={{
@@ -67,37 +81,20 @@ const DarkBackground = () => {
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: COLORS.black,
+        backgroundColor: COLORS.cream,
         overflow: "hidden",
       }}
     >
-      {/* Subtle center glow */}
+      {/* Subtle burnt orange center glow */}
       <div
         style={{
           position: "absolute",
-          top: "40%",
+          top: "45%",
           left: "50%",
-          width: 800,
-          height: 800,
+          width: 1000,
+          height: 1000,
           transform: "translate(-50%, -50%)",
-          background: `radial-gradient(circle, ${COLORS.accentBlue}08 0%, transparent 60%)`,
-        }}
-      />
-
-      {/* Subtle grid */}
-      <div
-        style={{
-          position: "absolute",
-          top: -40,
-          left: -40,
-          right: -40,
-          bottom: -40,
-          backgroundImage: `
-            linear-gradient(rgba(138, 201, 225, 0.025) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(138, 201, 225, 0.025) 1px, transparent 1px)
-          `,
-          backgroundSize: "70px 70px",
-          transform: `translateY(${gridDrift % 70}px)`,
+          background: `radial-gradient(circle, rgba(232, 93, 4, 0.03) 0%, transparent 50%)`,
         }}
       />
     </div>
@@ -105,31 +102,19 @@ const DarkBackground = () => {
 };
 
 // ============================================
-// INTRO SCENE
+// INTRO SCENE (with Waving Mascot - ORIGINAL FORMAT)
 // ============================================
 
 const IntroScene = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // Spool entry
-  const spoolProgress = spring({
-    frame,
-    fps,
-    config: { stiffness: 150, damping: 18 },
-  });
-
-  const spoolScale = interpolate(spoolProgress, [0, 0.7, 1], [0, 1.1, 1]);
-  const spoolOpacity = interpolate(frame, [0, 12], [0, 1], { extrapolateRight: "clamp" });
-
   // Text entries
-  const text1Frame = Math.max(0, frame - 18);
+  const text1Frame = Math.max(0, frame - 25);
   const text1Progress = spring({ frame: text1Frame, fps, config: { stiffness: 140, damping: 16 } });
 
-  const text2Frame = Math.max(0, frame - 32);
+  const text2Frame = Math.max(0, frame - 40);
   const text2Progress = spring({ frame: text2Frame, fps, config: { stiffness: 140, damping: 16 } });
-
-  const glow = glowPulse(frame, 0.06, 0.6, 1);
 
   return (
     <AbsoluteFill
@@ -139,107 +124,82 @@ const IntroScene = () => {
         padding: 40,
       }}
     >
-      {/* Spool */}
-      <div
-        style={{
-          fontSize: 110,
-          opacity: spoolOpacity,
-          transform: `scale(${spoolScale})`,
-          filter: `drop-shadow(0 0 30px ${COLORS.accentBlue}55)`,
-          marginBottom: 24,
-        }}
-      >
-        🧵
+      {/* Waving Mascot */}
+      <div style={{ marginBottom: 40 }}>
+        <WavingMascot startFrame={0} />
       </div>
 
-      {/* Title */}
+      {/* Text container - no border, larger text */}
       <div
         style={{
           opacity: interpolate(text1Progress, [0, 1], [0, 1]),
           transform: `scale(${interpolate(text1Progress, [0, 0.7, 1], [0.7, 1.05, 1])}) translateY(${interpolate(text1Progress, [0, 1], [25, 0])}px)`,
-          fontFamily: "Quicksand, sans-serif",
-          fontWeight: 700,
-          fontSize: 36,
-          color: COLORS.white,
           textAlign: "center",
-          textShadow: `0 0 25px ${COLORS.accentBlue}44`,
+          maxWidth: 600,
         }}
       >
-        Real excuses people tell
-      </div>
+        {/* Title - larger charcoal text */}
+        <div
+          style={{
+            fontFamily: "Quicksand, sans-serif",
+            fontWeight: 700,
+            fontSize: 56,
+            color: COLORS.charcoal,
+            lineHeight: 1.3,
+          }}
+        >
+          Real excuses people tell
+        </div>
 
-      <div
-        style={{
-          opacity: interpolate(text2Progress, [0, 1], [0, 1]),
-          transform: `scale(${interpolate(text2Progress, [0, 0.7, 1], [0.7, 1.05, 1])}) translateY(${interpolate(text2Progress, [0, 1], [20, 0])}px)`,
-          fontFamily: "Quicksand, sans-serif",
-          fontWeight: 600,
-          fontSize: 28,
-          color: COLORS.accentBlue,
-          textAlign: "center",
-          marginTop: 10,
-          textShadow: `0 0 ${20 * glow}px ${COLORS.accentBlue}77`,
-        }}
-      >
-        to unlock their phones
+        {/* Subtitle - burnt orange accent */}
+        <div
+          style={{
+            opacity: interpolate(text2Progress, [0, 1], [0, 1]),
+            transform: `translateY(${interpolate(text2Progress, [0, 1], [10, 0])}px)`,
+            fontFamily: "Quicksand, sans-serif",
+            fontWeight: 600,
+            fontSize: 44,
+            color: COLORS.burntOrange,
+            marginTop: 16,
+          }}
+        >
+          to unlock their phones
+        </div>
       </div>
     </AbsoluteFill>
   );
 };
 
 // ============================================
-// EXCUSE TICKER SCENE
+// EXCUSE TICKER SCENE (Full-width cards on cream)
 // ============================================
 
 const ExcuseTickerScene = () => {
   const frame = useCurrentFrame();
 
-  // Intro fade out
-  const introOpacity = interpolate(frame, [55, 70], [1, 0], {
+  // Intro fade out (extended for longer visibility)
+  const introOpacity = interpolate(frame, [75, 95], [1, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
-  // Dynamic vignette during blur phase
-  const vignette = vignetteIntensity(frame, BLUR_PHASE_START, BLUR_PHASE_END);
-
-  // Determine current excuse index for mascot reaction
-  let currentExcuseIndex = 0;
-  for (let i = 0; i < EXCUSE_TIMINGS.length; i++) {
-    const timing = EXCUSE_TIMINGS[i];
-    if (frame >= timing.startFrame && frame < timing.startFrame + timing.duration) {
-      currentExcuseIndex = i;
-      break;
-    }
-    if (frame >= timing.startFrame + timing.duration) {
-      currentExcuseIndex = i;
-    }
-  }
-
-  // Mascot opacity - fade in after intro, fade out before stats
-  const mascotOpacity = interpolate(frame, [70, 100, STATS_START - 30, STATS_START - 10], [0, 1, 1, 0], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  // Dynamic vignette during blur phase (subtle on cream)
+  const vignette = vignetteIntensity(frame, BLUR_PHASE_START, BLUR_PHASE_END) * 0.3;
 
   return (
     <>
       {/* Intro fades */}
-      {frame < 90 && (
+      {frame < 110 && (
         <div style={{ opacity: introOpacity }}>
           <IntroScene />
         </div>
       )}
 
-      {/* Mascot behind cards - reacts to excuses */}
-      {frame >= 70 && frame < STATS_START && (
-        <ReactiveMascot currentExcuseIndex={currentExcuseIndex} opacity={mascotOpacity} />
-      )}
-
-      {/* Excuse cards */}
-      {EXCUSE_TIMINGS.map((timing, i) => (
+      {/* Excuse cards with usernames - skip last one (handled by FinalExcuseZoomOut) */}
+      {EXCUSE_TIMINGS.slice(0, -1).map((timing, i) => (
         <CleanExcuseCard
           key={i}
+          username={EXCUSES[i].username}
           text={timing.text}
           startFrame={timing.startFrame}
           duration={timing.duration}
@@ -248,87 +208,47 @@ const ExcuseTickerScene = () => {
         />
       ))}
 
-      {/* Vignette during blur phase */}
+      {/* Subtle vignette during blur phase */}
       <Vignette intensity={vignette} />
     </>
   );
 };
 
 // ============================================
-// STATS FINALE SCENE (Vertical Stack with Mascot)
+// FINAL EXCUSE ZOOM OUT
 // ============================================
 
-const StatsFinaleScene = ({ startFrame }) => {
+const FinalExcuseZoomOut = ({ triggerFrame }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const relativeFrame = frame - startFrame;
+  const relativeFrame = frame - triggerFrame;
   if (relativeFrame < 0) return null;
 
-  // Scene fade in
-  const sceneOpacity = interpolate(relativeFrame, [0, 15], [0, 1], {
-    extrapolateRight: "clamp",
+  // Hold for 36 frames (1.2s like the brake), then zoom out
+  const holdDuration = 36;
+  const zoomStart = triggerFrame + holdDuration;
+
+  // Entry animation (spring in)
+  const entryProgress = spring({
+    frame: relativeFrame,
+    fps,
+    config: { stiffness: 200, damping: 18 },
   });
+  const entryScale = interpolate(entryProgress, [0, 0.6, 1], [0.3, 1.05, 1.0]);
+  const entryOpacity = interpolate(relativeFrame, [0, 10], [0, 1], { extrapolateRight: "clamp" });
 
-  // Enhanced background glow that intensifies
-  const glowIntensity = interpolate(relativeFrame, [0, 30, 60], [0.3, 0.8, 1], {
-    extrapolateRight: "clamp",
-  });
+  // Zoom out (starts after hold)
+  const { scale: zoomScale, opacity: zoomOpacity } = zoomOutTransition(frame, zoomStart, 25);
 
-  return (
-    <AbsoluteFill
-      style={{
-        opacity: sceneOpacity,
-      }}
-    >
-      {/* Enhanced halo/bloom behind stats */}
-      <div
-        style={{
-          position: "absolute",
-          top: "45%",
-          left: "50%",
-          width: 900,
-          height: 900,
-          transform: "translate(-50%, -50%)",
-          background: `radial-gradient(circle, ${COLORS.accentBlue}${Math.round(glowIntensity * 25).toString(16).padStart(2, '0')} 0%, transparent 50%)`,
-          pointerEvents: "none",
-        }}
-      />
+  // Combine: during hold use entry values, during zoom use zoom values
+  const isZooming = frame >= zoomStart;
+  const finalScale = isZooming ? zoomScale : entryScale;
+  const finalOpacity = isZooming ? zoomOpacity : entryOpacity;
 
-      <AbsoluteFill
-        style={{
-          padding: "80px 40px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-start",
-          alignItems: "center",
-        }}
-      >
-        {/* TOP: Jumping Mascot with bounce */}
-        <div style={{ paddingTop: 100, marginBottom: 60 }}>
-          <OutroMascot startFrame={startFrame} />
-        </div>
+  if (finalOpacity <= 0) return null;
 
-        {/* CENTER: Vertical Stats Stack - Sequential Slam */}
-        <div style={{ flex: 1, display: "flex", alignItems: "center" }}>
-          <VerticalStatsStack startFrame={startFrame + 15} />
-        </div>
-      </AbsoluteFill>
-    </AbsoluteFill>
-  );
-};
-
-// ============================================
-// FINAL EXCUSE ZOOM OUT (replaces flash)
-// ============================================
-
-const FinalExcuseZoomOut = ({ triggerFrame, text }) => {
-  const frame = useCurrentFrame();
-
-  const { scale, opacity } = zoomOutTransition(frame, triggerFrame, 25);
-
-  if (opacity <= 0) return null;
-
+  const lastExcuse = EXCUSES[EXCUSES.length - 1];
   const glow = glowPulse(frame, 0.08, 0.5, 0.9);
 
   return (
@@ -337,52 +257,101 @@ const FinalExcuseZoomOut = ({ triggerFrame, text }) => {
         position: "absolute",
         left: "50%",
         top: "50%",
-        transform: `translate(-50%, -50%) scale(${scale * 1.28})`,
-        opacity,
-        width: "92%",
-        maxWidth: 520,
+        transform: `translate(-50%, -50%) scale(${finalScale * 1.30})`,
+        opacity: finalOpacity,
+        width: "95%",
+        maxWidth: 560,
         zIndex: 50,
       }}
     >
       <div
         style={{
-          backgroundColor: COLORS.glass,
+          backgroundColor: COLORS.white,
           borderRadius: 28,
-          border: `2px solid ${COLORS.glassBorder}`,
+          border: `1px solid ${COLORS.burntOrange}`,
           padding: "42px 44px",
-          backdropFilter: "blur(18px)",
           boxShadow: `
-            0 0 ${35 * glow}px ${COLORS.accentBlue}${Math.round(glow * 55).toString(16).padStart(2, '0')},
-            0 0 ${70 * glow}px ${COLORS.accentBlue}${Math.round(glow * 30).toString(16).padStart(2, '0')},
-            inset 0 1px 0 rgba(255,255,255,0.18)
+            0 4px 20px rgba(232, 93, 4, 0.15),
+            0 8px 40px rgba(232, 93, 4, 0.1),
+            0 0 ${25 * glow}px rgba(232, 93, 4, ${glow * 0.2})
           `,
         }}
       >
+        {/* Username with indicator */}
         <div
           style={{
-            width: 50,
-            height: 4,
-            borderRadius: 2,
-            backgroundColor: COLORS.accentBlue,
-            marginBottom: 18,
-            boxShadow: `0 0 16px ${COLORS.accentBlue}`,
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            marginBottom: 16,
           }}
-        />
+        >
+          <div
+            style={{
+              width: 10,
+              height: 10,
+              borderRadius: 5,
+              backgroundColor: COLORS.burntOrange,
+            }}
+          />
+          <span
+            style={{
+              fontFamily: "Quicksand, sans-serif",
+              fontWeight: 700,
+              fontSize: 20,
+              color: COLORS.burntOrange,
+            }}
+          >
+            {lastExcuse.username}
+          </span>
+        </div>
         <p
           style={{
             fontFamily: "Quicksand, sans-serif",
             fontWeight: 700,
             fontSize: 34,
-            color: COLORS.white,
+            color: COLORS.charcoal,
             margin: 0,
             lineHeight: 1.4,
-            textShadow: "0 3px 10px rgba(0,0,0,0.5)",
           }}
         >
-          "{text}"
+          "{lastExcuse.text}"
         </p>
       </div>
     </div>
+  );
+};
+
+// ============================================
+// DOWNLOAD SCENE
+// ============================================
+
+const DownloadScene = ({ startFrame }) => {
+  const frame = useCurrentFrame();
+
+  const relativeFrame = frame - startFrame;
+  if (relativeFrame < 0) return null;
+
+  // Scene fade in
+  const sceneOpacity = interpolate(relativeFrame, [0, 20], [0, 1], {
+    extrapolateRight: "clamp",
+  });
+
+  return (
+    <AbsoluteFill
+      style={{
+        opacity: sceneOpacity,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <DownloadCard
+        startFrame={startFrame}
+        appName="Spool"
+        tagline="Unwind wisely 🧵"
+        socialProof="Join over 500+ users."
+      />
+    </AbsoluteFill>
   );
 };
 
@@ -394,34 +363,40 @@ export const CleanHypeReel = () => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
 
-  // Get the last excuse text for zoom-out
-  const lastExcuseText = EXCUSES[EXCUSES.length - 1];
-
   // Scene visibility
-  const showTicker = frame < STATS_START + 10;
-  const showStats = frame >= STATS_START - 5;
-  const showZoomOut = frame >= STATS_START - 5 && frame < STATS_START + 25;
+  const showTicker = frame < LAST_EXCUSE_START + 10; // Ticker ends when last excuse appears
+  const showZoomOut = frame >= LAST_EXCUSE_START && frame < STATS_START + 15;
 
-  // Ticker fade out (quicker, before zoom starts)
-  const tickerOpacity = frame >= STATS_START - 20
-    ? interpolate(frame, [STATS_START - 20, STATS_START - 5], [1, 0], { extrapolateRight: "clamp" })
+  // Individual stat slides (Stat 4 "Most Used Words" REMOVED per v4 spec)
+  const showStat1 = frame >= STAT_1_START && frame < STAT_2_START + 15;
+  const showStat2 = frame >= STAT_2_START && frame < STAT_3_START + 15;
+  const showStat3 = frame >= STAT_3_START && frame < DOWNLOAD_START + 15;
+
+  const showDownload = frame >= DOWNLOAD_START - 10;
+
+  // Fade transitions - ticker fades when last excuse appears
+  const tickerOpacity = frame >= LAST_EXCUSE_START - 5
+    ? interpolate(frame, [LAST_EXCUSE_START - 5, LAST_EXCUSE_START + 10], [1, 0], { extrapolateRight: "clamp" })
     : 1;
 
-  // Background blur and glow when stats appear (depth of field)
-  const bgBlurred = frame >= STATS_START - 5;
-  const bgGlowIntensity = interpolate(frame, [STATS_START - 5, STATS_START + 30], [0.035, 0.08], {
-    extrapolateRight: "clamp",
-  });
+  const stat1Opacity = frame >= STAT_2_START - 10
+    ? interpolate(frame, [STAT_2_START - 10, STAT_2_START + 5], [1, 0], { extrapolateRight: "clamp" })
+    : 1;
+
+  const stat2Opacity = frame >= STAT_3_START - 10
+    ? interpolate(frame, [STAT_3_START - 10, STAT_3_START + 5], [1, 0], { extrapolateRight: "clamp" })
+    : 1;
+
+  const stat3Opacity = frame >= DOWNLOAD_START - 10
+    ? interpolate(frame, [DOWNLOAD_START - 10, DOWNLOAD_START + 5], [1, 0], { extrapolateRight: "clamp" })
+    : 1;
 
   return (
     <AbsoluteFill style={{ overflow: "hidden" }}>
       <FontLoader />
-      <DarkBackground />
+      <CreamBackground />
 
-      {/* Background Spool with depth of field and enhanced glow */}
-      <BackgroundSpool blurred={bgBlurred} opacity={bgGlowIntensity} />
-
-      {/* Ticker scene */}
+      {/* Ticker scene (intro + excuse cards) */}
       {showTicker && (
         <div style={{ opacity: tickerOpacity }}>
           <ExcuseTickerScene />
@@ -429,12 +404,31 @@ export const CleanHypeReel = () => {
       )}
 
       {/* Zoom-out transition (final excuse scales up and fades) */}
-      {showZoomOut && (
-        <FinalExcuseZoomOut triggerFrame={STATS_START - 5} text={lastExcuseText} />
+      {showZoomOut && <FinalExcuseZoomOut triggerFrame={LAST_EXCUSE_START} />}
+
+      {/* Stat Slide 1: Excuses Count */}
+      {showStat1 && (
+        <div style={{ opacity: stat1Opacity }}>
+          <ExcusesStatSlide startFrame={STAT_1_START} />
+        </div>
       )}
 
-      {/* Stats Finale (vertical stack) */}
-      {showStats && <StatsFinaleScene startFrame={STATS_START} />}
+      {/* Stat Slide 2: Time Saved */}
+      {showStat2 && (
+        <div style={{ opacity: stat2Opacity }}>
+          <TimeSavedStatSlide startFrame={STAT_2_START} />
+        </div>
+      )}
+
+      {/* Stat Slide 3: Peak Excuse Time */}
+      {showStat3 && (
+        <div style={{ opacity: stat3Opacity }}>
+          <PeakExcuseTimeSlide startFrame={STAT_3_START} />
+        </div>
+      )}
+
+      {/* Download CTA */}
+      {showDownload && <DownloadScene startFrame={DOWNLOAD_START} />}
     </AbsoluteFill>
   );
 };
