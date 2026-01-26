@@ -1,0 +1,21 @@
+{
+  "name": "remotion",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "remotion studio",
+    "build": "remotion render MyVideo out/excuse-ticker.mp4",
+    "preview": "remotion preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Remotion video project",
+  "dependencies": {
+    "@remotion/bundler": "^4.0.410",
+    "@remotion/cli": "^4.0.410",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "remotion": "^4.0.410"
+  }
+}
