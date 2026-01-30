@@ -13,9 +13,14 @@ import {
   CleanExcuseCard,
   Vignette,
   WavingMascot,
-  ExcusesStatSlide,
-  TimeSavedStatSlide,
-  PeakExcuseTimeSlide,
+  TheLoopSlide,
+  TheBreakSlide,
+  TheMechanismSlide,
+  WallOfImpactSlide,
+  SuccessRateSlide,
+  RadialClockSlide,
+  WhatYouGetSlide,
+  ReviewsSlide,
   DownloadCard,
 } from "./CleanComponents.jsx";
 
@@ -25,44 +30,74 @@ import {
 
 const EXCUSES = [
   // Hook Excuses (0.9s each) - #1-3
-  { username: "Daneal", text: "i need to stalk my ex's new girl!!!!!" },
-  { username: "Praf", text: "Just peeing and scrolling while i'm peeing honestly" },
-  { username: "Daneal", text: "Going onto X to feed my mind with slop" },
+  { username: "Maya", text: "i need to stalk my ex's new girl!!!!!", emoji: "👀" },
+  { username: "Jake", text: "Just peeing and scrolling while i'm peeing honestly", emoji: "🚽" },
+  { username: "Sophia", text: "Going onto X to feed my mind with slop", emoji: "🧠" },
   // Acceleration Phase - #4-15
-  { username: "Daneal", text: "I am so bored during this work call I need to scroll" },
-  { username: "Vedika", text: "i want to scroll before i go brush my teeth" },
-  { username: "Jainam", text: "Please let me back in I wanna watch Italian brain rot memes" },
-  { username: "Daneal", text: "OK OK OK OK hear me out I need to talk to my friend" },
-  { username: "Julia", text: "I GOT INTO UT AUSTIN AND I WANNA BRAG" },
-  { username: "Praf", text: "I was having an absolutely titillating jolly good time on Instagram" },
-  { username: "Daneal", text: "i wanna see tiktok cuz i hate hate" },
-  { username: "Anonymous", text: "Yo my algorithm is feeding me some good videos right now" },
-  { username: "Vedika", text: "I'm bored and I don't feel like doing my work" },
-  { username: "Praf", text: "Real quick just wanna doom scroll LinkedIn now" },
-  { username: "Daneal", text: "I need to look at X because nothing ever happens" },
-  { username: "Jainam", text: "Please please I just wanna play the game" },
+  { username: "Marcus", text: "I am so bored during this work call I need to scroll", emoji: "😴" },
+  { username: "Vedika", text: "i want to scroll before i go brush my teeth", emoji: "🪥" },
+  { username: "Ryan", text: "Please let me back in I wanna watch Italian brain rot memes", emoji: "🍝" },
+  { username: "Aisha", text: "OK OK OK OK hear me out I need to talk to my friend", emoji: "💬" },
+  { username: "Julia", text: "I GOT INTO UT AUSTIN AND I WANNA BRAG", emoji: "🎉" },
+  { username: "Noah", text: "I was having an absolutely titillating jolly good time on Instagram", emoji: "📸" },
+  { username: "Lily", text: "i wanna see tiktok cuz i hate hate", emoji: "😤" },
+  { username: "Anonymous", text: "Yo my algorithm is feeding me some good videos right now", emoji: "🎯" },
+  { username: "Ethan", text: "I'm bored and I don't feel like doing my work", emoji: "😩" },
+  { username: "Chloe", text: "Real quick just wanna doom scroll LinkedIn now", emoji: "💼" },
+  { username: "Tyler", text: "I need to look at X because nothing ever happens", emoji: "🙄" },
+  { username: "Priya", text: "Please please I just wanna play the game", emoji: "🎮" },
   // Hard Brake / Final Excuse (1.2s hold) - #16
-  { username: "Praf", text: "It's been a long day and I just wanna look at some furry online" },
+  { username: "Derek", text: "It's been a long day and I just wanna look at some furry online", emoji: "🐾🤮" },
 ];
 
 // Extract just texts for timing calculation
 const EXCUSE_TEXTS = EXCUSES.map(e => e.text);
 
-// Calculate timings with gap for card overlap fix (start after intro)
-const EXCUSE_TIMINGS = calculateSCurveTiming(EXCUSE_TEXTS, 95);
+// Calculate timings with gap for card overlap fix (start after intro + typewriter)
+const EXCUSE_TIMINGS = calculateSCurveTiming(EXCUSE_TEXTS, 145);
 const LAST_EXCUSE = EXCUSE_TIMINGS[EXCUSE_TIMINGS.length - 1];
 const LAST_EXCUSE_START = LAST_EXCUSE.startFrame; // When final excuse appears
 const TICKER_END = LAST_EXCUSE.startFrame + LAST_EXCUSE.duration;
 
-// New timing for sequential stat slides (INCREASED durations per v4 spec)
-const STAT_SLIDE_DURATION = 75; // 2.5s at 30fps
-const STAT_3_DURATION = 90; // 3.0s for the chart slide
-const CTA_DURATION = 90; // 3.0s for CTA hold
-const STATS_START = TICKER_END + 30;
-const STAT_1_START = STATS_START; // Excuses count
-const STAT_2_START = STAT_1_START + STAT_SLIDE_DURATION; // Time saved
-const STAT_3_START = STAT_2_START + STAT_SLIDE_DURATION; // Peak excuse time
-const DOWNLOAD_START = STAT_3_START + STAT_3_DURATION; // CTA (no more Stat 4)
+// V14 TIMING - Extended key screens for better readability
+const LOOP_DURATION = 120; // 4.0s for "THE LOOP"
+const BREAK_DURATION = 105; // 3.5s for "THE BREAK"
+const MECHANISM_DURATION = 120; // 4.0s for React→Respond (V14: extended)
+const WALL_OF_IMPACT_DURATION = 90; // 3.0s for combined stats
+// DELETED: Scientific Speedbump title card
+// DELETED: ClinicalProofSlide1 (duplicate "Label the Urge")
+// DELETED: ClinicalProofSlide2 (Tokyo Rail - confusing)
+const SUCCESS_RATE_DURATION = 120; // 4.0s for Success Rate (V14: extended)
+const CLOCK_DURATION = 120; // 4.0s for late nights (V14: extended)
+const WHAT_YOU_GET_DURATION = 120; // 4.0s for feature cards (V14: extended)
+const REVIEW_DURATION = 180; // 6.0s for reviews (V14: extended)
+const CTA_DURATION = 90; // 3.0s for CTA
+
+// New sequence starts after excuses
+const LOOP_START = TICKER_END + 30;
+const BREAK_START = LOOP_START + LOOP_DURATION;
+const MECHANISM_START = BREAK_START + BREAK_DURATION;
+
+// Stats section follows the Loop → Break → Mechanism
+const STATS_START = MECHANISM_START + MECHANISM_DURATION;
+
+// 1. Wall of Impact (combined 3,500+ and 110+ days)
+const WALL_OF_IMPACT_START = STATS_START;
+
+// 2. Success Rate (simplified - no more confusing screens in between)
+const SUCCESS_RATE_START = WALL_OF_IMPACT_START + WALL_OF_IMPACT_DURATION;
+
+// 3. Late Nights Clock
+const CLOCK_START = SUCCESS_RATE_START + SUCCESS_RATE_DURATION;
+
+// 4. What You Get (V13 NEW - feature cards)
+const WHAT_YOU_GET_START = CLOCK_START + CLOCK_DURATION;
+
+// 5. Reviews (with header)
+const REVIEW_START = WHAT_YOU_GET_START + WHAT_YOU_GET_DURATION;
+
+// 6. CTA
+const DOWNLOAD_START = REVIEW_START + REVIEW_DURATION;
 
 // Get blur phase timing
 const BLUR_PHASE_START = EXCUSE_TIMINGS[3]?.startFrame || 150;
@@ -109,12 +144,44 @@ const IntroScene = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // Text entries
-  const text1Frame = Math.max(0, frame - 25);
-  const text1Progress = spring({ frame: text1Frame, fps, config: { stiffness: 140, damping: 16 } });
+  // Typewriter effect for title
+  const titleText = "Real moments of clarity";
+  const titleStartFrame = 25;
+  const charsPerFrame = 0.8; // Speed of typing
+  const titleCharsToShow = Math.min(
+    titleText.length,
+    Math.max(0, Math.floor((frame - titleStartFrame) * charsPerFrame))
+  );
+  const displayTitle = titleText.slice(0, titleCharsToShow);
+  const showTitleCursor = frame >= titleStartFrame && titleCharsToShow < titleText.length;
 
-  const text2Frame = Math.max(0, frame - 40);
-  const text2Progress = spring({ frame: text2Frame, fps, config: { stiffness: 140, damping: 16 } });
+  // Typewriter effect for subtitle
+  const subtitleText = "before the scroll";
+  const subtitleStartFrame = titleStartFrame + Math.ceil(titleText.length / charsPerFrame) + 5;
+  const subtitleCharsToShow = Math.min(
+    subtitleText.length,
+    Math.max(0, Math.floor((frame - subtitleStartFrame) * charsPerFrame))
+  );
+  const displaySubtitle = subtitleText.slice(0, subtitleCharsToShow);
+  const showSubtitleCursor = frame >= subtitleStartFrame && subtitleCharsToShow < subtitleText.length;
+
+  // Cursor blink
+  const cursorVisible = Math.floor(frame / 8) % 2 === 0;
+
+  // Container fade in
+  const containerOpacity = interpolate(frame, [20, 30], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+
+  // Pop effect when typing completes
+  const titleComplete = titleCharsToShow >= titleText.length;
+  const subtitleComplete = subtitleCharsToShow >= subtitleText.length;
+
+  const titleScale = titleComplete
+    ? interpolate(frame - (titleStartFrame + Math.ceil(titleText.length / charsPerFrame)), [0, 5, 10], [1, 1.05, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })
+    : 1;
+
+  const subtitleScale = subtitleComplete
+    ? interpolate(frame - (subtitleStartFrame + Math.ceil(subtitleText.length / charsPerFrame)), [0, 5, 10], [1, 1.05, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })
+    : 1;
 
   return (
     <AbsoluteFill
@@ -129,41 +196,49 @@ const IntroScene = () => {
         <WavingMascot startFrame={0} />
       </div>
 
-      {/* Text container - no border, larger text */}
+      {/* Text container */}
       <div
         style={{
-          opacity: interpolate(text1Progress, [0, 1], [0, 1]),
-          transform: `scale(${interpolate(text1Progress, [0, 0.7, 1], [0.7, 1.05, 1])}) translateY(${interpolate(text1Progress, [0, 1], [25, 0])}px)`,
+          opacity: containerOpacity,
           textAlign: "center",
-          maxWidth: 600,
+          maxWidth: 700,
         }}
       >
-        {/* Title - larger charcoal text */}
+        {/* Title - typewriter effect */}
         <div
           style={{
             fontFamily: "Quicksand, sans-serif",
             fontWeight: 700,
-            fontSize: 56,
+            fontSize: 60,
             color: COLORS.charcoal,
             lineHeight: 1.3,
+            transform: `scale(${titleScale})`,
+            minHeight: 80,
           }}
         >
-          Real excuses people tell
+          {displayTitle}
+          {showTitleCursor && cursorVisible && (
+            <span style={{ color: COLORS.burntOrange }}>|</span>
+          )}
         </div>
 
-        {/* Subtitle - burnt orange accent */}
+        {/* Subtitle - typewriter effect with burnt orange */}
         <div
           style={{
-            opacity: interpolate(text2Progress, [0, 1], [0, 1]),
-            transform: `translateY(${interpolate(text2Progress, [0, 1], [10, 0])}px)`,
             fontFamily: "Quicksand, sans-serif",
             fontWeight: 600,
-            fontSize: 44,
+            fontSize: 48,
             color: COLORS.burntOrange,
-            marginTop: 16,
+            marginTop: 20,
+            transform: `scale(${subtitleScale})`,
+            minHeight: 60,
+            textShadow: subtitleComplete ? `0 0 20px rgba(232, 93, 4, 0.3)` : "none",
           }}
         >
-          to unlock their phones
+          {displaySubtitle}
+          {showSubtitleCursor && cursorVisible && (
+            <span style={{ color: COLORS.burntOrange }}>|</span>
+          )}
         </div>
       </div>
     </AbsoluteFill>
@@ -177,8 +252,8 @@ const IntroScene = () => {
 const ExcuseTickerScene = () => {
   const frame = useCurrentFrame();
 
-  // Intro fade out (extended for longer visibility)
-  const introOpacity = interpolate(frame, [75, 95], [1, 0], {
+  // Intro fade out (extended to let typewriter finish + hold)
+  const introOpacity = interpolate(frame, [115, 135], [1, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -186,10 +261,16 @@ const ExcuseTickerScene = () => {
   // Dynamic vignette during blur phase (subtle on cream)
   const vignette = vignetteIntensity(frame, BLUR_PHASE_START, BLUR_PHASE_END) * 0.3;
 
+  // Disclaimer appears when excuses start showing (after intro)
+  const disclaimerOpacity = interpolate(frame, [145, 165], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+
   return (
     <>
       {/* Intro fades */}
-      {frame < 110 && (
+      {frame < 150 && (
         <div style={{ opacity: introOpacity }}>
           <IntroScene />
         </div>
@@ -201,12 +282,37 @@ const ExcuseTickerScene = () => {
           key={i}
           username={EXCUSES[i].username}
           text={timing.text}
+          emoji={EXCUSES[i].emoji}
           startFrame={timing.startFrame}
           duration={timing.duration}
           velocity={timing.velocity}
           isBrake={timing.isBrake}
         />
       ))}
+
+      {/* Disclaimer at the bottom - "real excuses recorded in Spool" */}
+      {frame >= 145 && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: 60,
+            left: "50%",
+            transform: "translateX(-50%)",
+            opacity: disclaimerOpacity,
+            fontFamily: "Quicksand, sans-serif",
+            fontWeight: 600,
+            fontSize: 20,
+            color: COLORS.charcoal,
+            backgroundColor: "rgba(255, 255, 255, 0.85)",
+            padding: "10px 24px",
+            borderRadius: 30,
+            border: `2px solid ${COLORS.burntOrange}`,
+            boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          Real excuses recorded in Spool
+        </div>
+      )}
 
       {/* Subtle vignette during blur phase */}
       <Vignette intensity={vignette} />
@@ -257,24 +363,38 @@ const FinalExcuseZoomOut = ({ triggerFrame }) => {
         position: "absolute",
         left: "50%",
         top: "50%",
-        transform: `translate(-50%, -50%) scale(${finalScale * 1.30})`,
+        transform: `translate(-50%, -50%) scale(${finalScale * 1.40})`,
         opacity: finalOpacity,
         width: "95%",
-        maxWidth: 560,
+        maxWidth: 620,
         zIndex: 50,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
       }}
     >
+      {/* Emoji ABOVE the card - bigger */}
+      <div
+        style={{
+          textAlign: "center",
+          fontSize: 80,
+          marginBottom: 16,
+        }}
+      >
+        {lastExcuse.emoji}
+      </div>
       <div
         style={{
           backgroundColor: COLORS.white,
-          borderRadius: 28,
-          border: `1px solid ${COLORS.burntOrange}`,
-          padding: "42px 44px",
+          borderRadius: 32,
+          border: `2px solid ${COLORS.burntOrange}`,
+          padding: "48px 50px",
           boxShadow: `
-            0 4px 20px rgba(232, 93, 4, 0.15),
-            0 8px 40px rgba(232, 93, 4, 0.1),
-            0 0 ${25 * glow}px rgba(232, 93, 4, ${glow * 0.2})
+            0 6px 25px rgba(232, 93, 4, 0.18),
+            0 10px 50px rgba(232, 93, 4, 0.12),
+            0 0 ${30 * glow}px rgba(232, 93, 4, ${glow * 0.25})
           `,
+          width: "100%",
         }}
       >
         {/* Username with indicator */}
@@ -282,15 +402,15 @@ const FinalExcuseZoomOut = ({ triggerFrame }) => {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 8,
-            marginBottom: 16,
+            gap: 10,
+            marginBottom: 18,
           }}
         >
           <div
             style={{
-              width: 10,
-              height: 10,
-              borderRadius: 5,
+              width: 12,
+              height: 12,
+              borderRadius: 6,
               backgroundColor: COLORS.burntOrange,
             }}
           />
@@ -298,7 +418,7 @@ const FinalExcuseZoomOut = ({ triggerFrame }) => {
             style={{
               fontFamily: "Quicksand, sans-serif",
               fontWeight: 700,
-              fontSize: 20,
+              fontSize: 22,
               color: COLORS.burntOrange,
             }}
           >
@@ -309,7 +429,7 @@ const FinalExcuseZoomOut = ({ triggerFrame }) => {
           style={{
             fontFamily: "Quicksand, sans-serif",
             fontWeight: 700,
-            fontSize: 34,
+            fontSize: 38,
             color: COLORS.charcoal,
             margin: 0,
             lineHeight: 1.4,
@@ -349,7 +469,7 @@ const DownloadScene = ({ startFrame }) => {
         startFrame={startFrame}
         appName="Spool"
         tagline="Unwind wisely 🧵"
-        socialProof="Join over 500+ users."
+        socialProof="Join over 600+ users."
       />
     </AbsoluteFill>
   );
@@ -363,32 +483,74 @@ export const CleanHypeReel = () => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
 
-  // Scene visibility
+  // Scene visibility - V11 simplified flow
   const showTicker = frame < LAST_EXCUSE_START + 10; // Ticker ends when last excuse appears
-  const showZoomOut = frame >= LAST_EXCUSE_START && frame < STATS_START + 15;
+  const showZoomOut = frame >= LAST_EXCUSE_START && frame < LOOP_START + 15;
 
-  // Individual stat slides (Stat 4 "Most Used Words" REMOVED per v4 spec)
-  const showStat1 = frame >= STAT_1_START && frame < STAT_2_START + 15;
-  const showStat2 = frame >= STAT_2_START && frame < STAT_3_START + 15;
-  const showStat3 = frame >= STAT_3_START && frame < DOWNLOAD_START + 15;
+  // Loop → Break → Mechanism sequence (after excuses, before stats)
+  const showLoop = frame >= LOOP_START && frame < BREAK_START + 12;
+  const showBreak = frame >= BREAK_START && frame < MECHANISM_START + 12;
+  const showMechanism = frame >= MECHANISM_START && frame < WALL_OF_IMPACT_START + 12;
 
+  // 1. Wall of Impact (combined stats)
+  const showWallOfImpact = frame >= WALL_OF_IMPACT_START && frame < SUCCESS_RATE_START + 12;
+
+  // 2. Success Rate (directly after Wall of Impact - no more confusing screens)
+  const showSuccessRate = frame >= SUCCESS_RATE_START && frame < CLOCK_START + 12;
+
+  // 3. Late Nights Clock
+  const showClock = frame >= CLOCK_START && frame < WHAT_YOU_GET_START + 12;
+
+  // 4. What You Get (V13 NEW)
+  const showWhatYouGet = frame >= WHAT_YOU_GET_START && frame < REVIEW_START + 12;
+
+  // 5. Reviews (with header)
+  const showReviews = frame >= REVIEW_START && frame < DOWNLOAD_START + 12;
+
+  // 6. CTA
   const showDownload = frame >= DOWNLOAD_START - 10;
 
-  // Fade transitions - ticker fades when last excuse appears
+  // Fade transitions - V11 simplified flow
   const tickerOpacity = frame >= LAST_EXCUSE_START - 5
     ? interpolate(frame, [LAST_EXCUSE_START - 5, LAST_EXCUSE_START + 10], [1, 0], { extrapolateRight: "clamp" })
     : 1;
 
-  const stat1Opacity = frame >= STAT_2_START - 10
-    ? interpolate(frame, [STAT_2_START - 10, STAT_2_START + 5], [1, 0], { extrapolateRight: "clamp" })
+  // Loop → Break → Mechanism fade transitions
+  const loopOpacity = frame >= BREAK_START - 10
+    ? interpolate(frame, [BREAK_START - 10, BREAK_START], [1, 0], { extrapolateRight: "clamp" })
     : 1;
 
-  const stat2Opacity = frame >= STAT_3_START - 10
-    ? interpolate(frame, [STAT_3_START - 10, STAT_3_START + 5], [1, 0], { extrapolateRight: "clamp" })
+  const breakOpacity = frame >= MECHANISM_START - 10
+    ? interpolate(frame, [MECHANISM_START - 10, MECHANISM_START], [1, 0], { extrapolateRight: "clamp" })
     : 1;
 
-  const stat3Opacity = frame >= DOWNLOAD_START - 10
-    ? interpolate(frame, [DOWNLOAD_START - 10, DOWNLOAD_START + 5], [1, 0], { extrapolateRight: "clamp" })
+  const mechanismOpacity = frame >= WALL_OF_IMPACT_START - 10
+    ? interpolate(frame, [WALL_OF_IMPACT_START - 10, WALL_OF_IMPACT_START], [1, 0], { extrapolateRight: "clamp" })
+    : 1;
+
+  // Wall of Impact fades into Success Rate (no more confusing screens)
+  const wallOpacity = frame >= SUCCESS_RATE_START - 12
+    ? interpolate(frame, [SUCCESS_RATE_START - 12, SUCCESS_RATE_START], [1, 0], { extrapolateRight: "clamp" })
+    : 1;
+
+  // Success Rate fades into Clock
+  const successRateOpacity = frame >= CLOCK_START - 12
+    ? interpolate(frame, [CLOCK_START - 12, CLOCK_START], [1, 0], { extrapolateRight: "clamp" })
+    : 1;
+
+  // Clock fades into What You Get
+  const clockOpacity = frame >= WHAT_YOU_GET_START - 12
+    ? interpolate(frame, [WHAT_YOU_GET_START - 12, WHAT_YOU_GET_START], [1, 0], { extrapolateRight: "clamp" })
+    : 1;
+
+  // What You Get fades into Reviews (V13 NEW)
+  const whatYouGetOpacity = frame >= REVIEW_START - 12
+    ? interpolate(frame, [REVIEW_START - 12, REVIEW_START], [1, 0], { extrapolateRight: "clamp" })
+    : 1;
+
+  // Reviews fades into CTA
+  const reviewsOpacity = frame >= DOWNLOAD_START - 12
+    ? interpolate(frame, [DOWNLOAD_START - 12, DOWNLOAD_START], [1, 0], { extrapolateRight: "clamp" })
     : 1;
 
   return (
@@ -406,24 +568,59 @@ export const CleanHypeReel = () => {
       {/* Zoom-out transition (final excuse scales up and fades) */}
       {showZoomOut && <FinalExcuseZoomOut triggerFrame={LAST_EXCUSE_START} />}
 
-      {/* Stat Slide 1: Excuses Count */}
-      {showStat1 && (
-        <div style={{ opacity: stat1Opacity }}>
-          <ExcusesStatSlide startFrame={STAT_1_START} />
+      {/* THE LOOP - Autopilot Loop Animation */}
+      {showLoop && (
+        <div style={{ opacity: loopOpacity }}>
+          <TheLoopSlide startFrame={LOOP_START} />
         </div>
       )}
 
-      {/* Stat Slide 2: Time Saved */}
-      {showStat2 && (
-        <div style={{ opacity: stat2Opacity }}>
-          <TimeSavedStatSlide startFrame={STAT_2_START} />
+      {/* THE BREAK - Voice Waveform Breaks Loop */}
+      {showBreak && (
+        <div style={{ opacity: breakOpacity }}>
+          <TheBreakSlide startFrame={BREAK_START} />
         </div>
       )}
 
-      {/* Stat Slide 3: Peak Excuse Time */}
-      {showStat3 && (
-        <div style={{ opacity: stat3Opacity }}>
-          <PeakExcuseTimeSlide startFrame={STAT_3_START} />
+      {/* THE MECHANISM - Brain Animation */}
+      {showMechanism && (
+        <div style={{ opacity: mechanismOpacity }}>
+          <TheMechanismSlide startFrame={MECHANISM_START} />
+        </div>
+      )}
+
+      {/* 1. Wall of Impact (Combined Stats) */}
+      {showWallOfImpact && (
+        <div style={{ opacity: wallOpacity }}>
+          <WallOfImpactSlide startFrame={WALL_OF_IMPACT_START} />
+        </div>
+      )}
+
+      {/* 2. Success Rate (larger, clearer copy) */}
+      {showSuccessRate && (
+        <div style={{ opacity: successRateOpacity }}>
+          <SuccessRateSlide startFrame={SUCCESS_RATE_START} />
+        </div>
+      )}
+
+      {/* 3. Late Nights Clock */}
+      {showClock && (
+        <div style={{ opacity: clockOpacity }}>
+          <RadialClockSlide startFrame={CLOCK_START} />
+        </div>
+      )}
+
+      {/* 4. What You Get - Feature Cards (V13 NEW) */}
+      {showWhatYouGet && (
+        <div style={{ opacity: whatYouGetOpacity }}>
+          <WhatYouGetSlide startFrame={WHAT_YOU_GET_START} />
+        </div>
+      )}
+
+      {/* 5. Reviews (with header + clean animation) */}
+      {showReviews && (
+        <div style={{ opacity: reviewsOpacity }}>
+          <ReviewsSlide startFrame={REVIEW_START} />
         </div>
       )}
 

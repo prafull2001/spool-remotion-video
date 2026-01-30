@@ -1,0 +1,201 @@
+================================================================================
+SPOOL iOS APP - REMOTION VIDEO TRAILER BUILD INSTRUCTIONS
+================================================================================
+
+This document contains the complete prompt history and instructions used to
+build this Remotion video project with Claude Code (Claude AI).
+
+================================================================================
+PROJECT OVERVIEW
+================================================================================
+
+- Framework: Remotion (React-based video framework)
+- Output: 1080x1920 vertical video (9:16 aspect ratio for mobile/social)
+- Duration: 52 seconds (1560 frames at 30fps)
+- Purpose: Promotional trailer for Spool iOS app (screen time management)
+
+================================================================================
+VIDEO STRUCTURE & TIMING
+================================================================================
+
+The video follows this slide sequence:
+
+1. INTRO (frames 0-150) - App logo and tagline animation
+2. TICKER (frames 150-330) - Scrolling stats/facts
+3. LOOP SLIDE (frames 330-510) - "The Doom Scroll Loop" visualization
+4. BREAK SLIDE (frames 510-690) - "Break the Loop" with Spool
+5. MECHANISM SLIDE (frames 690-870) - "React → Respond" psychology visual
+6. SUCCESS RATE SLIDE (frames 870-1050) - "2.9x More Likely" stat with mic icon
+7. STATS SLIDE (frames 1050-1245) - Key statistics display
+8. REVIEWS SLIDE (frames 1245-1425) - App Store reviews with staggered cards
+9. DOWNLOAD CARD (frames 1425-1560) - Final CTA with App Store badge
+
+================================================================================
+KEY DESIGN SPECIFICATIONS
+================================================================================
+
+COLOR PALETTE (src/components/colors.js):
+- Cream background: #FFF8F0
+- Burnt Orange (primary): #E85D04
+- Charcoal (text): #2D3436
+- White: #FFFFFF
+
+TYPOGRAPHY:
+- Primary font: Quicksand (Google Font)
+- Weights: 500 (regular), 600 (semibold), 700 (bold), 800 (extra bold)
+
+ANIMATIONS:
+- Spring animations using Remotion's spring() function
+- Typical config: { stiffness: 180-200, damping: 16-18 }
+- Glow pulse effect for emphasis
+- Staggered card animations with translateX/Y and rotation
+
+================================================================================
+REVIEWS SLIDE SPECIFICATIONS (V18 - Final)
+================================================================================
+
+The reviews section went through multiple iterations (V15 → V16 → V17 → V18).
+Final V18 specifications:
+
+HEADER:
+- Mascot image: 160px width
+- Star rating: 48px font size, 8px gap
+- "4.8 on the App Store" text: 56px, burnt orange
+
+REVIEW CARDS:
+- Container max-width: 680px
+- Card gap: 36px
+- Card padding: 36px 44px
+- Card border: 3px solid burnt orange
+- Card border-radius: 28px
+- Card min-height: 130px
+- Card shadow: 0 6px 28px rgba(0,0,0,0.1)
+- Horizontal stagger: alternating ±50px translateX
+- Rotation: alternating ±1.5 degrees
+
+CARD CONTENT:
+- Username emoji: 32px
+- Username text: 26px, burnt orange
+- Card stars: 24px
+- Review text: 28px, charcoal, line-height 1.45
+
+BOTTOM TEXT:
+- "Users save 110+ wakeful days with Spool"
+- Font size: 32px
+- Color: #3B82F6 (blue)
+- No border/background (plain text)
+
+REVIEWS DATA:
+1. KathyNat14: "This app has changed my screen time pattern and broken my habit of scrolling just to scroll."
+2. JodyFlaco: "Spool makes me type up my thought process which breaks the negative emotional cycle."
+3. GoldenSword03: "Really great user interface and great tutorial!"
+4. Hireaysstdd: "i haven't used instagram in 3 days. enough said."
+
+================================================================================
+DOWNLOAD CARD (CTA) SPECIFICATIONS
+================================================================================
+
+- Mascot: 260px width
+- App name "Spool": 72px font
+- Tagline "Unwind wisely": 32px, burnt orange
+- Social proof "Join over 600+ users": 42px, burnt orange, with glow
+- App Store badge: 380px width with subtle pulse animation
+- Heart emoji: 50px with pulse animation
+
+================================================================================
+STUDY BADGES
+================================================================================
+
+Several slides include academic citations:
+- "NYU Implementation Intentions" - Gollwitzer & Sheeran, 2006
+- "UCLA Affect Labeling Research" - Lieberman et al., 2007
+
+These appear as styled badges with scale={1.3} for prominence.
+
+================================================================================
+FILE STRUCTURE
+================================================================================
+
+src/
+├── index.jsx              # Entry point
+├── Root.jsx               # Remotion composition config
+├── CleanHypeReel.jsx      # Main video component with timing
+├── CleanComponents.jsx    # Shared/legacy components
+├── cleanAnimations.jsx    # Animation utilities (glowPulse, etc.)
+└── components/
+    ├── colors.js          # Color constants
+    ├── StudyBadge.jsx     # Academic citation badge component
+    ├── Utility.jsx        # AppStoreBadge and other utilities
+    └── slides/
+        ├── ReviewsSlide.jsx      # App Store reviews
+        ├── DownloadCard.jsx      # Final CTA screen
+        ├── SuccessRateSlide.jsx  # 2.9x statistic
+        └── TheMechanismSlide.jsx # React→Respond visual
+
+public/
+└── spooli_jumping.png     # Mascot image asset
+
+================================================================================
+BUILD & RENDER COMMANDS
+================================================================================
+
+# Install dependencies
+npm install
+
+# Start Remotion Studio (preview)
+npx remotion studio
+
+# Render final video
+npx remotion render MyVideo out/video.mp4
+
+# Render with custom output name
+npx remotion render MyVideo out/v18_reviews_bigger.mp4 --overwrite
+
+================================================================================
+VERSION HISTORY
+================================================================================
+
+V13-V14: Initial slide implementations, study badges, mic animation
+V15: Added Reviews section with staggered cards, increased video duration to 52s
+V16: Increased card sizes and spacing to fill screen better
+V17: Removed App Store button from reviews, changed bottom text to plain blue
+V18: Scaled everything WAY bigger (final version)
+     - All elements increased ~1.5x in size
+     - Mascot: 90→160px, Stars: 28→48px, Rating: 36→56px
+     - Cards: padding 28/32→36/44, gap 28→36, text 19→28px
+
+================================================================================
+PROMPTS USED (Summary)
+================================================================================
+
+The video was built iteratively with these key instructions:
+
+1. "Create a Remotion video for Spool iOS app - vertical 9:16 format"
+
+2. "Add reviews section with 4 real App Store reviews, staggered card animations"
+   - Cards should alternate left/right with slight rotation
+   - Spring animations for entry
+   - Show 4.8 star rating and mascot at top
+
+3. "Add App Store badge CTA at the end with 'Join 600+ users' social proof"
+
+4. "Video gets capped at 40 seconds - increase duration to show all slides"
+   - Fixed by increasing durationInFrames from 1200 to 1560
+
+5. "Reviews section is crammed - fill the screen, make everything larger"
+   - Multiple iterations (V16, V17, V18)
+   - Final instruction: "Scale everything up. Way, way bigger."
+
+6. "Remove App Store button from reviews, change bottom text to plain blue"
+
+7. "Push to GitHub with build instructions for reference"
+
+================================================================================
+CREDITS
+================================================================================
+
+Built with Claude Code (Claude AI by Anthropic)
+Framework: Remotion (https://remotion.dev)
+App: Spool iOS - Screen time management
+
+================================================================================

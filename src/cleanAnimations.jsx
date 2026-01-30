@@ -38,9 +38,9 @@ export const FLOAT_SPRING = {
 
 /**
  * Calculates excuse timings with exponential acceleration
- * Phase 1: 3 excuses at 0.9s each (27 frames) - "Intro Hang"
+ * Phase 1: 3 excuses at 0.73s each (22 frames) - "Quick Intro"
  * Phase 2: Exponential acceleration - cards blur and fly past
- * Phase 3: Final excuse with 1.2s hold (36 frames) - "The Brake"
+ * Phase 3: Final excuse with 1.1s hold (33 frames) - "The Brake"
  */
 export const calculateSCurveTiming = (excuses, baseStartFrame = 70) => {
   const timings = [];
@@ -53,9 +53,9 @@ export const calculateSCurveTiming = (excuses, baseStartFrame = 70) => {
     let velocity = 0; // For motion blur calculation
 
     if (index < 3) {
-      // Phase 1: "Intro Hang" - Slow and readable (0.9s = 27 frames)
-      duration = 27;
-      velocity = 0.1;
+      // Phase 1: "Slow Intro" - Much slower for impact (1.2s = 36 frames)
+      duration = 36;
+      velocity = 0.05;
     } else if (index < 15) {
       // Phase 2: Exponential acceleration - cards blur and fly
       // Excuses 4-15 (12 excuses) accelerate through
@@ -64,15 +64,15 @@ export const calculateSCurveTiming = (excuses, baseStartFrame = 70) => {
       // Exponential curve: fast acceleration
       const exponential = Math.pow(progress, 1.8);
 
-      // Duration decreases from 16 to 3 frames exponentially
-      duration = Math.round(16 - (exponential * 13));
-      duration = Math.max(3, duration);
+      // Duration decreases from 14 to 4 frames exponentially (slightly slower)
+      duration = Math.round(14 - (exponential * 10));
+      duration = Math.max(4, duration);
 
       // Velocity increases exponentially (for blur)
-      velocity = 0.3 + exponential * 0.7;
+      velocity = 0.30 + exponential * 0.65;
     } else {
-      // Phase 3: "The Brake" - Final excuse #16 holds for 1.2s (36 frames)
-      duration = 36;
+      // Phase 3: "The Brake" - Final excuse holds for 1.1s (33 frames)
+      duration = 33;
       velocity = 0; // No blur on brake
     }
 

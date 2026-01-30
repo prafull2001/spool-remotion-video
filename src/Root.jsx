@@ -8,7 +8,7 @@ export const RemotionRoot = () => {
       <Composition
         id="MyVideo"
         component={CleanHypeReel}
-        durationInFrames={900} // 30 seconds at 30fps (intro + ticker + 3 stat slides + CTA)
+        durationInFrames={1560} // ~52 seconds at 30fps (intro + ticker + loop/break/mechanism + stats + reviews + CTA)
         fps={30}
         width={1080}  // 9:16 vertical aspect ratio
         height={1920}
