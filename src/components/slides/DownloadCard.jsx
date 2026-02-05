@@ -73,7 +73,7 @@ export const DownloadCard = ({
             width: 260,
             height: "auto",
             marginBottom: 35,
-            filter: `drop-shadow(0 8px 30px rgba(232, 93, 4, ${glow * 0.4}))`,
+            filter: `drop-shadow(0 8px 30px rgba(74, 200, 245, ${glow * 0.4}))`,
           }}
         />
 
@@ -113,7 +113,7 @@ export const DownloadCard = ({
             color: COLORS.burntOrange,
             marginBottom: 45,
             textAlign: "center",
-            textShadow: `0 0 ${15 * glow}px rgba(232, 93, 4, 0.3)`,
+            textShadow: `0 0 ${15 * glow}px rgba(74, 200, 245, 0.3)`,
           }}
         >
           {socialProof}

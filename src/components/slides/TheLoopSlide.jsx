@@ -64,7 +64,7 @@ export const TheLoopSlide = ({ startFrame }) => {
             strokeWidth={4}
             strokeDasharray="15 8"
             opacity={0.6}
-            style={{ filter: `drop-shadow(0 0 ${10 * glow}px rgba(232, 93, 4, 0.4))` }}
+            style={{ filter: `drop-shadow(0 0 ${10 * glow}px rgba(74, 200, 245, 0.4))` }}
           />
 
           {/* Arrow heads at each quadrant */}
@@ -90,7 +90,7 @@ export const TheLoopSlide = ({ startFrame }) => {
             cy={centerY + loopRadius * Math.sin((pulseAngle * Math.PI) / 180)}
             r={12}
             fill={COLORS.burntOrange}
-            style={{ filter: `drop-shadow(0 0 15px rgba(232, 93, 4, 0.8))` }}
+            style={{ filter: `drop-shadow(0 0 15px rgba(74, 200, 245, 0.8))` }}
           />
         </svg>
 

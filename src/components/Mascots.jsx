@@ -97,7 +97,7 @@ export const OutroMascot = ({ startFrame }) => {
         alignItems: "center",
         opacity,
         transform: `scale(${scale}) translateY(${y}px)`,
-        filter: `drop-shadow(0 4px 20px rgba(232, 93, 4, ${glow * 0.3}))`,
+        filter: `drop-shadow(0 4px 20px rgba(74, 200, 245, ${glow * 0.3}))`,
       }}
     >
       <Img
@@ -145,7 +145,7 @@ export const WavingMascot = ({ startFrame = 0 }) => {
       style={{
         opacity,
         transform: `scale(${scale}) rotate(${waveRotation}deg)`,
-        filter: `drop-shadow(0 8px 30px rgba(232, 93, 4, ${glow * 0.25}))`,
+        filter: `drop-shadow(0 8px 30px rgba(74, 200, 245, ${glow * 0.25}))`,
       }}
     >
       <Img

@@ -198,13 +198,13 @@ export const TheMechanismSlide = ({ startFrame }) => {
               width: 160,
               height: 160,
               borderRadius: "50%",
-              backgroundColor: `rgba(232, 93, 4, ${0.1 + transitionProgress * 0.15})`,
+              backgroundColor: `rgba(74, 200, 245, ${0.1 + transitionProgress * 0.15})`,
               border: `4px solid ${COLORS.burntOrange}`,
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
               boxShadow: transitionProgress > 0.5
-                ? `0 0 ${35 * glow}px rgba(232, 93, 4, ${0.3 + transitionProgress * 0.3})`
+                ? `0 0 ${35 * glow}px rgba(74, 200, 245, ${0.3 + transitionProgress * 0.3})`
                 : "none",
             }}
           >
@@ -218,7 +218,7 @@ export const TheMechanismSlide = ({ startFrame }) => {
               color: COLORS.burntOrange,
               marginTop: 16,
               textShadow: transitionProgress > 0.5
-                ? `0 0 ${15 * glow}px rgba(232, 93, 4, 0.4)`
+                ? `0 0 ${15 * glow}px rgba(74, 200, 245, 0.4)`
                 : "none",
             }}
           >

@@ -88,7 +88,7 @@ export const ReviewsSlide = ({ startFrame }) => {
             style={{
               width: 160,
               height: "auto",
-              filter: `drop-shadow(0 6px 18px rgba(232, 93, 4, 0.4))`,
+              filter: `drop-shadow(0 6px 18px rgba(74, 200, 245, 0.4))`,
             }}
           />
         </div>
@@ -107,7 +107,7 @@ export const ReviewsSlide = ({ startFrame }) => {
               key={i}
               style={{
                 fontSize: 48,
-                filter: `drop-shadow(0 0 ${6 * glow}px rgba(232, 93, 4, 0.4))`,
+                filter: `drop-shadow(0 0 ${6 * glow}px rgba(74, 200, 245, 0.4))`,
               }}
             >
               ⭐
@@ -124,7 +124,7 @@ export const ReviewsSlide = ({ startFrame }) => {
             color: COLORS.burntOrange,
             marginTop: 16,
             marginBottom: 40,
-            textShadow: `0 0 ${12 * glow}px rgba(232, 93, 4, ${glow * 0.4})`,
+            textShadow: `0 0 ${12 * glow}px rgba(74, 200, 245, ${glow * 0.4})`,
           }}
         >
           4.8 on the App Store
@@ -224,7 +224,7 @@ export const ReviewsSlide = ({ startFrame }) => {
         })}
       </div>
 
-      {/* V18: Bottom text - PLAIN BLUE, WAY BIGGER */}
+      {/* V20: Bottom text - SPOOL BLUE, WAY BIGGER */}
       <div
         style={{
           marginTop: 50,
@@ -236,7 +236,7 @@ export const ReviewsSlide = ({ startFrame }) => {
           style={{
             fontFamily: "Quicksand, sans-serif",
             fontSize: 32,
-            color: "#3B82F6",
+            color: COLORS.burntOrange, // Now Spool Blue via colors.js
             fontWeight: 600,
             letterSpacing: "-0.01em",
           }}

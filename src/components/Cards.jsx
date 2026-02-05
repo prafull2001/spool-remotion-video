@@ -25,8 +25,8 @@ export const PhoneExcuseCard = ({ username, text, isBrake = false }) => {
           border: `1px solid ${COLORS.burntOrange}`,
           padding: isBrake ? "24px 22px" : "20px 18px",
           boxShadow: `
-            0 4px 12px rgba(232, 93, 4, 0.12),
-            0 0 ${15 * glow}px rgba(232, 93, 4, ${glow * 0.15})
+            0 4px 12px rgba(74, 200, 245, 0.12),
+            0 0 ${15 * glow}px rgba(74, 200, 245, ${glow * 0.15})
           `,
         }}
       >
@@ -141,9 +141,9 @@ export const CleanExcuseCard = ({
           border: `2px solid ${COLORS.burntOrange}`,
           padding: isBrake ? "48px 50px" : "40px 44px",
           boxShadow: `
-            0 6px 25px rgba(232, 93, 4, 0.18),
-            0 10px 50px rgba(232, 93, 4, 0.12),
-            0 0 ${30 * glow}px rgba(232, 93, 4, ${glow * 0.25})
+            0 6px 25px rgba(74, 200, 245, 0.18),
+            0 10px 50px rgba(74, 200, 245, 0.12),
+            0 0 ${30 * glow}px rgba(74, 200, 245, ${glow * 0.25})
           `,
           width: "100%",
         }}

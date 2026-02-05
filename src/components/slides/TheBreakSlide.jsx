@@ -117,7 +117,7 @@ export const TheBreakSlide = ({ startFrame }) => {
                 height,
                 backgroundColor: COLORS.burntOrange,
                 borderRadius: 3,
-                boxShadow: `0 0 ${8 * glow}px rgba(232, 93, 4, 0.5)`,
+                boxShadow: `0 0 ${8 * glow}px rgba(74, 200, 245, 0.5)`,
               }}
             />
           ))}

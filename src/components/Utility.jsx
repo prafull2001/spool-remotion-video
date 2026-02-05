@@ -18,7 +18,7 @@ export const Vignette = ({ intensity = 0.7 }) => {
         left: 0,
         right: 0,
         bottom: 0,
-        background: `radial-gradient(circle at 50% 50%, transparent 40%, rgba(232, 93, 4, ${intensity * 0.15}) 100%)`,
+        background: `radial-gradient(circle at 50% 50%, transparent 40%, rgba(74, 200, 245, ${intensity * 0.15}) 100%)`,
         pointerEvents: "none",
       }}
     />

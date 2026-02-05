@@ -54,7 +54,7 @@ export const WallOfImpactSlide = ({ startFrame }) => {
           width: 140,
           height: "auto",
           marginBottom: 30,
-          filter: `drop-shadow(0 8px 25px rgba(232, 93, 4, ${glow * 0.3}))`,
+          filter: `drop-shadow(0 8px 25px rgba(74, 200, 245, ${glow * 0.3}))`,
         }}
       />
 
@@ -65,7 +65,7 @@ export const WallOfImpactSlide = ({ startFrame }) => {
           fontWeight: 800,
           fontSize: 140,
           color: COLORS.burntOrange,
-          textShadow: `0 0 ${30 * glow}px rgba(232, 93, 4, ${glow * 0.5})`,
+          textShadow: `0 0 ${30 * glow}px rgba(74, 200, 245, ${glow * 0.5})`,
           lineHeight: 1,
         }}
       >
@@ -116,7 +116,7 @@ export const WallOfImpactSlide = ({ startFrame }) => {
           fontWeight: 800,
           fontSize: 120,
           color: COLORS.burntOrange,
-          textShadow: `0 0 ${25 * glow}px rgba(232, 93, 4, ${glow * 0.4})`,
+          textShadow: `0 0 ${25 * glow}px rgba(74, 200, 245, ${glow * 0.4})`,
           lineHeight: 1,
         }}
       >

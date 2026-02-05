@@ -55,8 +55,8 @@ const FeatureCard = ({ icon, title, subtitle, delay, glow }) => {
         padding: "28px 24px",
         textAlign: "center",
         boxShadow: `
-          0 6px 25px rgba(232, 93, 4, 0.12),
-          0 0 ${20 * glow}px rgba(232, 93, 4, ${glow * 0.15})
+          0 6px 25px rgba(74, 200, 245, 0.12),
+          0 0 ${20 * glow}px rgba(74, 200, 245, ${glow * 0.15})
         `,
         opacity: cardOpacity,
         transform: `scale(${cardScale}) translateY(${cardY}px)`,

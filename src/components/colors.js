@@ -1,5 +1,6 @@
 // ============================================
-// COLORS - "Cream & Burnt Orange" Modern Clean Theme
+// COLORS - "Cream & Spool Blue" Modern Clean Theme
+// V20: Changed from Burnt Orange to Spool Blue
 // ============================================
 
 export const COLORS = {
@@ -7,10 +8,11 @@ export const COLORS = {
   cream: "#FDF6EE",
   white: "#FFFFFF",
 
-  // Primary accent - Burnt Orange
-  burntOrange: "#E85D04",
-  teal: "#E85D04", // Map to burnt orange for compatibility
-  dustyOrange: "#E85D04",
+  // Primary accent - Spool Blue (from app screenshot)
+  burntOrange: "#4AC8F5", // Now blue! Kept name for compatibility
+  spoolBlue: "#4AC8F5",
+  teal: "#4AC8F5",
+  dustyOrange: "#4AC8F5",
 
   // Text
   charcoal: "#2D2D2D",
@@ -20,9 +22,9 @@ export const COLORS = {
 
   // Legacy mappings for compatibility
   black: "#FDF6EE",
-  accentBlue: "#E85D04",
-  accentOrange: "#E85D04",
+  accentBlue: "#4AC8F5",
+  accentOrange: "#4AC8F5",
   gray: "rgba(45, 45, 45, 0.6)",
   glass: "#FFFFFF",
-  glassBorder: "#E85D04",
+  glassBorder: "#4AC8F5",
 };

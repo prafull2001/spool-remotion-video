@@ -6,5 +6,6 @@ export { WallOfImpactSlide } from "./WallOfImpactSlide.jsx";
 export { SuccessRateSlide } from "./SuccessRateSlide.jsx";
 export { RadialClockSlide } from "./RadialClockSlide.jsx";
 export { WhatYouGetSlide } from "./WhatYouGetSlide.jsx";
+export { TypeOrSpeakSlide } from "./TypeOrSpeakSlide.jsx";
 export { ReviewsSlide } from "./ReviewsSlide.jsx";
 export { DownloadCard } from "./DownloadCard.jsx";

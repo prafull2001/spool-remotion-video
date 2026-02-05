@@ -12,3 +12,17 @@
 [debug] [2026-01-26T18:15:45.580Z] > authorizing via signed-in user (spoolappteam@gmail.com)
 [debug] [2026-01-26T18:15:45.581Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
 [debug] [2026-01-26T18:15:45.581Z] > authorizing via signed-in user (spoolappteam@gmail.com)
+[debug] [2026-02-05T02:02:01.242Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-05T02:02:01.259Z] > authorizing via signed-in user (spoolappteam@gmail.com)
+[debug] [2026-02-05T02:02:01.259Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-05T02:02:01.264Z] > authorizing via signed-in user (spoolappteam@gmail.com)
+[debug] [2026-02-05T02:02:01.436Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-05T02:02:01.440Z] > authorizing via signed-in user (spoolappteam@gmail.com)
+[debug] [2026-02-05T02:02:01.607Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-05T02:02:01.608Z] > authorizing via signed-in user (spoolappteam@gmail.com)
+[debug] [2026-02-05T02:02:01.612Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-05T02:02:01.615Z] > authorizing via signed-in user (spoolappteam@gmail.com)
+[debug] [2026-02-05T02:02:01.627Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-05T02:02:01.627Z] > authorizing via signed-in user (spoolappteam@gmail.com)
+[debug] [2026-02-05T02:02:01.636Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-02-05T02:02:01.636Z] > authorizing via signed-in user (spoolappteam@gmail.com)

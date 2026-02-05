@@ -5,6 +5,9 @@ import {
   useVideoConfig,
   interpolate,
   spring,
+  Audio,
+  Sequence,
+  staticFile,
 } from "remotion";
 import { FontLoader } from "./fonts.jsx";
 import { calculateSCurveTiming, vignetteIntensity, glowPulse, zoomOutTransition } from "./cleanAnimations.jsx";
@@ -15,6 +18,7 @@ import {
   WavingMascot,
   TheLoopSlide,
   TheBreakSlide,
+  TypeOrSpeakSlide,
   TheMechanismSlide,
   WallOfImpactSlide,
   SuccessRateSlide,
@@ -23,6 +27,13 @@ import {
   ReviewsSlide,
   DownloadCard,
 } from "./CleanComponents.jsx";
+import {
+  WhooshSFX,
+  PopSFX,
+  ChimeSFX,
+  BlingSFX,
+  ClickSFX,
+} from "./components/SoundEffects.jsx";
 
 // ============================================
 // EXCUSES WITH USERNAMES
@@ -59,26 +70,25 @@ const LAST_EXCUSE = EXCUSE_TIMINGS[EXCUSE_TIMINGS.length - 1];
 const LAST_EXCUSE_START = LAST_EXCUSE.startFrame; // When final excuse appears
 const TICKER_END = LAST_EXCUSE.startFrame + LAST_EXCUSE.duration;
 
-// V14 TIMING - Extended key screens for better readability
+// V20 TIMING - Added Type/Speak slide, blue color theme
 const LOOP_DURATION = 120; // 4.0s for "THE LOOP"
 const BREAK_DURATION = 105; // 3.5s for "THE BREAK"
-const MECHANISM_DURATION = 120; // 4.0s for React→Respond (V14: extended)
+const TYPE_OR_SPEAK_DURATION = 120; // 4.0s for "Type or Speak" (V20 NEW)
+const MECHANISM_DURATION = 120; // 4.0s for React→Respond
 const WALL_OF_IMPACT_DURATION = 90; // 3.0s for combined stats
-// DELETED: Scientific Speedbump title card
-// DELETED: ClinicalProofSlide1 (duplicate "Label the Urge")
-// DELETED: ClinicalProofSlide2 (Tokyo Rail - confusing)
-const SUCCESS_RATE_DURATION = 120; // 4.0s for Success Rate (V14: extended)
-const CLOCK_DURATION = 120; // 4.0s for late nights (V14: extended)
-const WHAT_YOU_GET_DURATION = 120; // 4.0s for feature cards (V14: extended)
-const REVIEW_DURATION = 180; // 6.0s for reviews (V14: extended)
+const SUCCESS_RATE_DURATION = 120; // 4.0s for Success Rate
+const CLOCK_DURATION = 120; // 4.0s for late nights
+const WHAT_YOU_GET_DURATION = 120; // 4.0s for feature cards
+const REVIEW_DURATION = 180; // 6.0s for reviews
 const CTA_DURATION = 90; // 3.0s for CTA
 
 // New sequence starts after excuses
 const LOOP_START = TICKER_END + 30;
 const BREAK_START = LOOP_START + LOOP_DURATION;
-const MECHANISM_START = BREAK_START + BREAK_DURATION;
+const TYPE_OR_SPEAK_START = BREAK_START + BREAK_DURATION; // V20 NEW
+const MECHANISM_START = TYPE_OR_SPEAK_START + TYPE_OR_SPEAK_DURATION;
 
-// Stats section follows the Loop → Break → Mechanism
+// Stats section follows the Loop → Break → TypeOrSpeak → Mechanism
 const STATS_START = MECHANISM_START + MECHANISM_DURATION;
 
 // 1. Wall of Impact (combined 3,500+ and 110+ days)
@@ -129,7 +139,7 @@ const CreamBackground = () => {
           width: 1000,
           height: 1000,
           transform: "translate(-50%, -50%)",
-          background: `radial-gradient(circle, rgba(232, 93, 4, 0.03) 0%, transparent 50%)`,
+          background: `radial-gradient(circle, rgba(74, 200, 245, 0.03) 0%, transparent 50%)`,
         }}
       />
     </div>
@@ -232,7 +242,7 @@ const IntroScene = () => {
             marginTop: 20,
             transform: `scale(${subtitleScale})`,
             minHeight: 60,
-            textShadow: subtitleComplete ? `0 0 20px rgba(232, 93, 4, 0.3)` : "none",
+            textShadow: subtitleComplete ? `0 0 20px rgba(74, 200, 245, 0.3)` : "none",
           }}
         >
           {displaySubtitle}
@@ -390,9 +400,9 @@ const FinalExcuseZoomOut = ({ triggerFrame }) => {
           border: `2px solid ${COLORS.burntOrange}`,
           padding: "48px 50px",
           boxShadow: `
-            0 6px 25px rgba(232, 93, 4, 0.18),
-            0 10px 50px rgba(232, 93, 4, 0.12),
-            0 0 ${30 * glow}px rgba(232, 93, 4, ${glow * 0.25})
+            0 6px 25px rgba(74, 200, 245, 0.18),
+            0 10px 50px rgba(74, 200, 245, 0.12),
+            0 0 ${30 * glow}px rgba(74, 200, 245, ${glow * 0.25})
           `,
           width: "100%",
         }}
@@ -487,9 +497,10 @@ export const CleanHypeReel = () => {
   const showTicker = frame < LAST_EXCUSE_START + 10; // Ticker ends when last excuse appears
   const showZoomOut = frame >= LAST_EXCUSE_START && frame < LOOP_START + 15;
 
-  // Loop → Break → Mechanism sequence (after excuses, before stats)
+  // Loop → Break → TypeOrSpeak → Mechanism sequence (after excuses, before stats)
   const showLoop = frame >= LOOP_START && frame < BREAK_START + 12;
-  const showBreak = frame >= BREAK_START && frame < MECHANISM_START + 12;
+  const showBreak = frame >= BREAK_START && frame < TYPE_OR_SPEAK_START + 12;
+  const showTypeOrSpeak = frame >= TYPE_OR_SPEAK_START && frame < MECHANISM_START + 12; // V20 NEW
   const showMechanism = frame >= MECHANISM_START && frame < WALL_OF_IMPACT_START + 12;
 
   // 1. Wall of Impact (combined stats)
@@ -515,12 +526,17 @@ export const CleanHypeReel = () => {
     ? interpolate(frame, [LAST_EXCUSE_START - 5, LAST_EXCUSE_START + 10], [1, 0], { extrapolateRight: "clamp" })
     : 1;
 
-  // Loop → Break → Mechanism fade transitions
+  // Loop → Break → TypeOrSpeak → Mechanism fade transitions
   const loopOpacity = frame >= BREAK_START - 10
     ? interpolate(frame, [BREAK_START - 10, BREAK_START], [1, 0], { extrapolateRight: "clamp" })
     : 1;
 
-  const breakOpacity = frame >= MECHANISM_START - 10
+  const breakOpacity = frame >= TYPE_OR_SPEAK_START - 10
+    ? interpolate(frame, [TYPE_OR_SPEAK_START - 10, TYPE_OR_SPEAK_START], [1, 0], { extrapolateRight: "clamp" })
+    : 1;
+
+  // V20 NEW: TypeOrSpeak fades into Mechanism
+  const typeOrSpeakOpacity = frame >= MECHANISM_START - 10
     ? interpolate(frame, [MECHANISM_START - 10, MECHANISM_START], [1, 0], { extrapolateRight: "clamp" })
     : 1;
 
@@ -582,6 +598,13 @@ export const CleanHypeReel = () => {
         </div>
       )}
 
+      {/* TYPE OR SPEAK - How it works (V20 NEW) */}
+      {showTypeOrSpeak && (
+        <div style={{ opacity: typeOrSpeakOpacity }}>
+          <TypeOrSpeakSlide startFrame={TYPE_OR_SPEAK_START} />
+        </div>
+      )}
+
       {/* THE MECHANISM - Brain Animation */}
       {showMechanism && (
         <div style={{ opacity: mechanismOpacity }}>
@@ -626,6 +649,44 @@ export const CleanHypeReel = () => {
 
       {/* Download CTA */}
       {showDownload && <DownloadScene startFrame={DOWNLOAD_START} />}
+
+      {/* ============================================ */}
+      {/* SOUND EFFECTS - All transitions and moments */}
+      {/* Source: github.com/rse/soundfx (CC0) */}
+      {/* ============================================ */}
+
+      {/* Typing clicks during intro (every few frames) */}
+      {[25, 28, 31, 34, 37, 40, 43, 46, 49, 52, 55, 58, 61, 64, 67, 70, 73, 76, 79, 82, 85, 88, 91, 94, 97, 100].map((f) => (
+        <ClickSFX key={`type-${f}`} frame={f} volume={0.15} />
+      ))}
+
+      {/* Card pop sounds for excuse cards (subset to avoid audio overload) */}
+      {EXCUSE_TIMINGS.filter((_, i) => i % 2 === 0).slice(0, 8).map((timing, i) => (
+        <PopSFX key={`card-${i}`} frame={timing.startFrame} volume={0.3} />
+      ))}
+
+      {/* Final excuse dramatic moment */}
+      <BlingSFX frame={LAST_EXCUSE_START} volume={0.6} />
+
+      {/* Slide transitions - whoosh sounds */}
+      <WhooshSFX frame={LOOP_START} volume={0.5} />
+      <WhooshSFX frame={BREAK_START} volume={0.5} />
+      <WhooshSFX frame={TYPE_OR_SPEAK_START} volume={0.5} />
+      <WhooshSFX frame={MECHANISM_START} volume={0.5} />
+      <WhooshSFX frame={WALL_OF_IMPACT_START} volume={0.45} />
+      <WhooshSFX frame={SUCCESS_RATE_START} volume={0.45} />
+      <WhooshSFX frame={CLOCK_START} volume={0.45} />
+      <WhooshSFX frame={WHAT_YOU_GET_START} volume={0.45} />
+      <WhooshSFX frame={REVIEW_START} volume={0.5} />
+
+      {/* Review card stagger pops */}
+      <PopSFX frame={REVIEW_START + 8} volume={0.35} />
+      <PopSFX frame={REVIEW_START + 17} volume={0.35} />
+      <PopSFX frame={REVIEW_START + 26} volume={0.35} />
+      <PopSFX frame={REVIEW_START + 35} volume={0.35} />
+
+      {/* CTA success chime */}
+      <ChimeSFX frame={DOWNLOAD_START} volume={0.55} />
     </AbsoluteFill>
   );
 };

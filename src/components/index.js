@@ -24,6 +24,7 @@ export {
   SuccessRateSlide,
   RadialClockSlide,
   WhatYouGetSlide,
+  TypeOrSpeakSlide,
   ReviewsSlide,
   DownloadCard,
 } from "./slides/index.js";

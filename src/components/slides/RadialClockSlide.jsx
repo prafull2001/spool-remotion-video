@@ -88,7 +88,7 @@ export const RadialClockSlide = ({ startFrame }) => {
       <div style={{ position: "relative", width: clockSize, height: clockSize }}>
         <svg width={clockSize} height={clockSize}>
           {/* Background circle */}
-          <circle cx={centerX} cy={centerY} r={radius + 20} fill="rgba(232, 93, 4, 0.08)" />
+          <circle cx={centerX} cy={centerY} r={radius + 20} fill="rgba(74, 200, 245, 0.08)" />
 
           {/* Segments */}
           {segments.map((seg, i) => {
@@ -102,7 +102,7 @@ export const RadialClockSlide = ({ startFrame }) => {
                 d={createArc(seg.startAngle, endAngle, radius)}
                 fill={seg.color}
                 style={{
-                  filter: i === 0 ? `drop-shadow(0 0 ${20 * glow}px rgba(232, 93, 4, 0.6))` : "none",
+                  filter: i === 0 ? `drop-shadow(0 0 ${20 * glow}px rgba(74, 200, 245, 0.6))` : "none",
                 }}
               />
             );
@@ -134,7 +134,7 @@ export const RadialClockSlide = ({ startFrame }) => {
               fontWeight: 800,
               fontSize: 44,
               color: COLORS.burntOrange,
-              textShadow: `0 0 ${15 * glow}px rgba(232, 93, 4, ${glow * 0.4})`,
+              textShadow: `0 0 ${15 * glow}px rgba(74, 200, 245, ${glow * 0.4})`,
             }}
           >
             35%
@@ -171,7 +171,7 @@ export const RadialClockSlide = ({ startFrame }) => {
           color: COLORS.burntOrange,
           marginTop: 45, // V13: 45px gap after clock
           textAlign: "center",
-          textShadow: `0 0 ${18 * glow}px rgba(232, 93, 4, ${glow * 0.35})`,
+          textShadow: `0 0 ${18 * glow}px rgba(74, 200, 245, ${glow * 0.35})`,
         }}
       >
         Take back your late nights 🌙
@@ -187,7 +187,7 @@ export const RadialClockSlide = ({ startFrame }) => {
           marginTop: 25,
           textAlign: "center",
           padding: "14px 32px",
-          backgroundColor: "rgba(232, 93, 4, 0.08)",
+          backgroundColor: "rgba(74, 200, 245, 0.08)",
           borderRadius: 35,
           border: `2px solid ${COLORS.burntOrange}`,
         }}

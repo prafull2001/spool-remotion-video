@@ -30,7 +30,8 @@ export {
   WallOfImpactSlide,
   SuccessRateSlide,
   RadialClockSlide,
+  WhatYouGetSlide,
+  TypeOrSpeakSlide,
   ReviewsSlide,
   DownloadCard,
-  WhatYouGetSlide,
 } from "./components/index.js";

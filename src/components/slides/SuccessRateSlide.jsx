@@ -131,7 +131,7 @@ export const SuccessRateSlide = ({ startFrame }) => {
           fontWeight: 800,
           fontSize: 200,
           color: COLORS.burntOrange,
-          textShadow: `0 4px 30px rgba(232, 93, 4, ${0.3 + glow * 0.2})`,
+          textShadow: `0 4px 30px rgba(74, 200, 245, ${0.3 + glow * 0.2})`,
           lineHeight: 0.9,
         }}
       >
